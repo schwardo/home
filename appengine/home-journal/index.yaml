@@ -1,0 +1,5 @@
+indexes:
+- kind: Sample
+  properties:
+  - name: dataset
+  - name: timestamp
