@@ -20,6 +20,17 @@ class MainPage(webapp2.RequestHandler):
     self.response.out.write('<html><body>')
     self.response.out.write('</body></html>')
 
+class LoadData(webapp2.RequestHandler):
+  def get(self):
+    dataset = self.request.get('dataset')
+    key = self.request.get('key')
+    results = []
+    q = Sample.gql('WHERE dataset = :1 ORDER BY timestamp', dataset)
+    for point in q.fetch(1000):
+      values = json.loads(point.values)
+      results.append([str(point.timestamp), values[key]])
+    self.response.write(json.dumps(results))
+
 
 class AddDataPoint(webapp2.RequestHandler):
   def post(self):
@@ -35,5 +46,6 @@ class AddDataPoint(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
   ('/', MainPage),
-  ('/api/add-data-point', AddDataPoint)
+  ('/api/add-data-point', AddDataPoint),
+  ('/api/load-data', LoadData)
 ], debug=True)
