@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+    <implementation>
+        <settings>
+            <protocol>cr</protocol>
+        </settings>
+    <functions>
+    local denonLib
+
+    function add_children()
+	denonLib.createChildren()
+    end
+    
+    function startup(lul_device)
+        if (package.path:find ("/etc/cmh-ludl/?.lua;/etc/cmh-lu/?.lua", 1, true) == nil) then
+	        package.path = package.path .. ";/etc/cmh-ludl/?.lua;/etc/cmh-lu/?.lua"
+	    end
+        package.loaded.L_DenonLib1 = nil
+        denonLib = require("L_DenonReceiver1")
+        denonLib.receiverStartup(lul_device)
+    end
+
+    </functions>
+    <incoming>
+    <lua>
+        local dataLength = 0
+        local data = tostring(lul_data)
+        dataLength = string.len(data)
+        if (dataLength ~= "") then
+            denonLib.incoming_data(data)
+        else
+            denonLib.log("(incoming) No response received.")
+        end
+    </lua>
+    </incoming>
+
+    <startup>startup</startup>
+
+    <actionList>
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input1</name>
+    <run>
+        -- Main picture Input Select - TV/CBL
+        denonLib.sendZoneCommand(lul_device, 'SI', 'TV/CBL', 'DiscreteinputTV')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input2</name>
+    <run>
+        -- Main picture Input Select - HDP
+        denonLib.sendZoneCommand(lul_device, 'SI','HDP','DiscreteinputPC')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input3</name>
+    <run>
+        -- Main picture Input Select - DVD
+        denonLib.sendZoneCommand(lul_device, 'SI','DVD','DiscreteinputDVD')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input4</name>
+    <run>
+        -- Main picture Input Select - NET/USB
+        denonLib.sendZoneCommand(lul_device, 'SI','NET/USB','Input1')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input5</name>
+    <run>
+        -- Main picture Input Select - TUNER
+        denonLib.sendZoneCommand(lul_device, 'SI','TUNER','Input2')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input6</name>
+    <run>
+        -- Main picture Input Select - CD
+        denonLib.sendZoneCommand(lul_device, 'SI','CD','DiscreteinputCD1')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input7</name>
+    <run>
+        -- Main picture Input Select - PHONO
+        denonLib.sendZoneCommand(lul_device, 'SI','PHONO','Input3')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input8</name>
+    <run>
+        -- Main picture Input Select - SAT
+        denonLib.sendZoneCommand(lul_device, 'SI','SAT','Input4')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input9</name>
+    <run>
+        -- Main picture Input Select - VCR
+        denonLib.sendZoneCommand(lul_device, 'SI','VCR','DiscreteinputVCR')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>Input10</name>
+    <run>
+        -- Main picture Input Select - DVR
+        denonLib.sendZoneCommand(lul_device, 'SI','DVR','DiscreteinputDVR')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>DiscreteinputPC</name>
+    <run>
+        -- Main picture Input Select - V.AUX
+        denonLib.sendZoneCommand(lul_device, 'SI','V.AUX','Input5')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>DiscreteinputVCR</name>
+    <run>
+        -- Main picture Input Select - XM
+        denonLib.sendZoneCommand(lul_device, 'SI','XM','Input6')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
+    <name>DiscreteinputDVI</name>
+    <run>
+        -- Main picture Input Select - IPOD
+        denonLib.sendZoneCommand(lul_device, 'SI','IPOD','Input7')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:DiscretePower1</serviceId>
+    <name>Off</name>
+    <run>
+        -- Power zone off
+        denonLib.sendZoneCommand(lul_device, 'ZM','OFF','Off')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:DiscretePower1</serviceId>
+    <name>On</name>
+    <run>
+        -- Power zone on
+        denonLib.sendZoneCommand(lul_device, 'ZM','ON','On')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
+    <name>SetTarget</name>
+    <run>
+        local zone = denonLib.findZone(lul_device)
+        local powerStatus = luup.variable_get(SWP_SID, SWP_TARGET, lul_device)
+        local value = tostring(lul_settings.newTargetValue)
+        local cmd
+        denonLib.log("(SetTarget) " .. zone)
+        if (zone == "") then
+            cmd = (value == "1") and "PWON" or "PWSTANDBY"
+        elseif (zone == "Z1") then
+            cmd = "ZM" .. ((value == "1") and "ON" or "OFF")
+        else
+            cmd = zone .. ((value == "1") and "ON" or "OFF")
+        end
+        denonLib.denon3800ReceiverSend(cmd)
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
+    <name>GetTarget</name>
+    <run>
+        denonLib.denon3800ReceiverSend("PW?")
+        local target = luup.variable_get(SWP_SID, SWP_TARGET, lul_device)
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:HaDevice1</serviceId>
+    <name>ToggleState</name>
+    <run>
+        local value = luup.variable_get(SWP_SID,SWP_STATUS,lul_device)
+        luup.call_action(SWP_SID,SWP_SET_TARGET,'newTargetValue=' .. ((value=='1') and '0' or '1') , lul_device)
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:Volume1</serviceId>
+    <name>Mute</name>
+    <run>
+        local value = ((lul_settings.newTargetValue == '1') and 'ON' or 'OFF')
+        denonLib.sendZoneCommand(lul_device, '','MU' .. value,'Mute ' .. value)
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:Volume1</serviceId>
+    <name>Up</name>
+    <run>
+        -- Volume up
+        denonLib.sendZoneCommand(lul_device, 'MV', 'UP', 'Volume up')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:micasaverde-com:serviceId:Volume1</serviceId>
+    <name>Down</name>
+    <run>
+        -- Volume down
+        denonLib.sendZoneCommand(lul_device, 'MV', 'DOWN', 'Volume down')
+    </run>
+    </action>
+
+    <action>
+    <serviceId>urn:denon-com:serviceId:Receiver1</serviceId>
+    <name>SetVolumeTarget</name>
+    <run>
+        denonLib.setVolume(lul_device, tonumber(lul_settings.newTargetValue))
+    </run>
+    </action>
+
+    </actionList>
+</implementation>
