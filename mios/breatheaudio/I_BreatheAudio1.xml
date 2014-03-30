@@ -7,7 +7,7 @@
     local breatheAudioLib
 
     function add_children()
-	breatheAudioLib.createChildren()
+	    breatheAudioLib.createChildren()
     end
     
     function startup(lul_device)
@@ -40,7 +40,7 @@
     <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
     <name>Input1</name>
     <run>
-      -- breatheAudioLib.sendZoneCommand(lul_device, 'SI', 'TV/CBL', 'DiscreteinputTV')
+      -- breatheAudioLib.sendZoneCommand(lul_device, 'SI', 'Input1', 'Input1')
     </run>
     </action>
 
@@ -48,7 +48,7 @@
     <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
     <name>Input2</name>
     <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','HDP','DiscreteinputPC')
+        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI', 'Input2', 'Input2')
     </run>
     </action>
 
@@ -56,7 +56,7 @@
     <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
     <name>Input3</name>
     <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','DVD','DiscreteinputDVD')
+        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI', 'Input3', 'Input3')
     </run>
     </action>
 
@@ -64,7 +64,7 @@
     <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
     <name>Input4</name>
     <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','NET/USB','Input1')
+        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI', 'Input4', 'Input4')
     </run>
     </action>
 
@@ -72,7 +72,7 @@
     <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
     <name>Input5</name>
     <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','TUNER','Input2')
+        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI', 'Input5', 'Input5')
     </run>
     </action>
 
@@ -80,63 +80,7 @@
     <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
     <name>Input6</name>
     <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','CD','DiscreteinputCD1')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
-    <name>Input7</name>
-    <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','PHONO','Input3')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
-    <name>Input8</name>
-    <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','SAT','Input4')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
-    <name>Input9</name>
-    <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','VCR','DiscreteinputVCR')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
-    <name>Input10</name>
-    <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','DVR','DiscreteinputDVR')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
-    <name>DiscreteinputPC</name>
-    <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','V.AUX','Input5')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
-    <name>DiscreteinputVCR</name>
-    <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','XM','Input6')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:InputSelection1</serviceId>
-    <name>DiscreteinputDVI</name>
-    <run>
-        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI','IPOD','Input7')
+        -- breatheAudioLib.sendZoneCommand(lul_device, 'SI', 'Input6', 'Input6')
     </run>
     </action>
 
@@ -145,7 +89,7 @@
     <name>Off</name>
     <run>
         -- Power zone off
-        breatheAudioLib.sendZoneCommand(lul_device, '*','OFF','Off')
+        breatheAudioLib.sendZoneCommand(lul_device, '*', 'OFF', 'Off')
     </run>
     </action>
 
@@ -154,45 +98,7 @@
     <name>On</name>
     <run>
         -- Power zone on
-        breatheAudioLib.sendZoneCommand(lul_device, '*','ON','On')
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
-    <name>SetTarget</name>
-    <run>
-        local zone = breatheAudioLib.findZone(lul_device)
-        local powerStatus = luup.variable_get(SWP_SID, SWP_TARGET, lul_device)
-        local value = tostring(lul_settings.newTargetValue)
-        local cmd
-        breatheAudioLib.log("(SetTarget) " .. zone)
-        if (zone == "") then
-            cmd = (value == "1") and "PWON" or "PWSTANDBY"
-        elseif (zone == "Z1") then
-            cmd = "ZM" .. ((value == "1") and "ON" or "OFF")
-        else
-            cmd = zone .. ((value == "1") and "ON" or "OFF")
-        end
-        breatheAudioLib.breatheAudioReceiverSend(cmd)
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
-    <name>GetTarget</name>
-    <run>
-        breatheAudioLib.breatheAudioReceiverSend("PW?")
-        local target = luup.variable_get(SWP_SID, SWP_TARGET, lul_device)
-    </run>
-    </action>
-
-    <action>
-    <serviceId>urn:micasaverde-com:serviceId:HaDevice1</serviceId>
-    <name>ToggleState</name>
-    <run>
-        local value = luup.variable_get(SWP_SID,SWP_STATUS,lul_device)
-        luup.call_action(SWP_SID,SWP_SET_TARGET,'newTargetValue=' .. ((value=='1') and '0' or '1') , lul_device)
+        breatheAudioLib.sendZoneCommand(lul_device, '*', 'ON', 'On')
     </run>
     </action>
 
@@ -201,7 +107,7 @@
     <name>Mute</name>
     <run>
         local value = ((lul_settings.newTargetValue == '1') and 'ON' or 'OFF')
-        breatheAudioLib.sendZoneCommand(lul_device, '','MU' .. value,'Mute ' .. value)
+        breatheAudioLib.sendZoneCommand(lul_device, '', 'MU' .. value, 'Mute ' .. value)
     </run>
     </action>
 

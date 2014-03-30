@@ -24,7 +24,7 @@ local childDeviceZone = {}
 local receiverDetails = {
     ["AVR-3808EUR"]={ zones={3}, inputs={}, names={} },
     ["AVR-2112USA"]={ zones={2}, inputs={}, names={} },
-    ["default"]={ zones={3}, inputs={}, names={} }
+    ["default"]={ zones={6}, inputs={}, names={} }
 }
 
 local breatheAudioDevice
@@ -136,9 +136,7 @@ local function initialParameters(breatheAudioDevice)
     for k, v in pairs(childDeviceZone) do
         local child_id = k
         luup.variable_set(SWP_SID, SWP_STATUS, "0",breatheAudioDevice)
-        luup.variable_set(IPS_IID, "Surround", "0" ,child_id)
         luup.variable_set(IPS_IID, "Input",    "0", child_id)
-        luup.variable_set(IPS_IID, "Video",    "0", child_id)
         luup.variable_set(VOS_VID, "Mute",     "0", child_id)
         luup.variable_set(VOS_VID, "Volume",   "0", child_id) 
     end
